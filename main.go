@@ -17,25 +17,6 @@ type Product struct {
   Price uint
 }
 
-func setupRoutes(app *fiber.App) {
-
-app.Get("/", func(c *fiber.Ctx) error {
-		// Render index within layouts/main
-		return c.Render("index", fiber.Map{
-			"Title": "Hello, World!",
-		}, "layouts/main")
-	})
-	// app.Get("/users/:name?", func(c *fiber.Ctx) error {
-		// return c.Render("index", fiber.Map{
-		// 	"Title": c.Params("name"),
-		// }, "layouts/main")
-	// })
-
-	app.Get("/users/:id", routes.GetUser)
-	app.Post("/users", routes.CreateUser)
-}
-
-
 func main() {
 	database.ConnectDb()
 	// Engine
@@ -46,7 +27,7 @@ func main() {
 		Views: engine,
 	})
 
-	setupRoutes(app)
+	routes.Register(app)
 
 	app.Static("/", "./app/assets")
 	log.Fatal(app.Listen(":3000"))

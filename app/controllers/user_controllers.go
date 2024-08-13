@@ -1,4 +1,4 @@
-package routes
+package usercontrollers
 
 import (
 	"errors"
@@ -20,7 +20,7 @@ func CreateResponseUser(user models.User) User {
 	return User{ID: user.ID, FirstName: user.FirstName, LastName: user.LastName}
 }
 
-func CreateUser(c *fiber.Ctx) error {
+func Create(c *fiber.Ctx) error {
 	var user models.User
 
 	if err := c.BodyParser(&user); err != nil {
@@ -32,7 +32,7 @@ func CreateUser(c *fiber.Ctx) error {
 	return c.Status(200).JSON(responseUser)
 }
 
-func GetUsers(c *fiber.Ctx) error {
+func Index(c *fiber.Ctx) error {
 	users := []models.User{}
 	database.Database.Db.Find(&users)
 	responseUsers := []User{}
@@ -51,7 +51,7 @@ func findUser(id int, user *models.User) error {
 	return nil
 }
 
-func GetUser(c *fiber.Ctx) error {
+func Show(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 
 	var user models.User
@@ -65,7 +65,6 @@ func GetUser(c *fiber.Ctx) error {
 	}
 
 	responseUser := CreateResponseUser(user)
-
 	// return c.Status(200).JSON(responseUser)
 	return c.Render("index", fiber.Map{
 			"Title": responseUser,
