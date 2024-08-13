@@ -1,0 +1,53 @@
+package main
+
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
+)
+
+func main() {
+	// Create a new engine
+	engine := html.New("./app/views", ".html")
+
+
+	// Or from an embedded system
+	// See github.com/gofiber/embed for examples
+	// engine := html.NewFileSystem(http.Dir("./views"), ".html")
+
+	// Pass the engine to the Views
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+
+
+
+	// app.Get("/", func(c *fiber.Ctx) error {
+	// 	// Render index
+	// 	return c.Render("index", fiber.Map{
+	// 		"Title": "Hello, World!",
+	// 	})
+	// })
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		// Render index within layouts/main
+		return c.Render("index", fiber.Map{
+			"Title": "Hello, World!",
+		}, "layouts/main")
+	})
+
+	// app.Get("/layouts-nested", func(c *fiber.Ctx) error {
+	// 	// Render index within layouts/nested/main within layouts/nested/base
+	// 	return c.Render("index", fiber.Map{
+	// 		"Title": "Hello, World!",
+	// 	}, "layouts/nested/main", "layouts/nested/base")
+	// })
+
+
+	app.Static("/", "./app/assets")
+
+
+	log.Fatal(app.Listen(":3000"))
+}
