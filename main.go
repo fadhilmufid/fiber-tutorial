@@ -7,28 +7,22 @@ import (
 	"github.com/fadhilmufid/fiber-tutorial/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
-	"gorm.io/gorm"
 )
 
-
-type Product struct {
-  gorm.Model
-  Code  string
-  Price uint
-}
 
 func main() {
 	database.ConnectDb()
 	// Engine
 	engine := html.New("./app/views", ".html")
-
 	// App
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+	// static
+	app.Static("/", "./app/assets")
+
 
 	routes.Register(app)
 
-	app.Static("/", "./app/assets")
 	log.Fatal(app.Listen(":3000"))
 }
