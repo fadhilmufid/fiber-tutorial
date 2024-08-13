@@ -1,6 +1,7 @@
 package routes
 
 import (
+	usercontrollers "github.com/fadhilmufid/fiber-tutorial/app/controllers"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -11,10 +12,7 @@ func Register(app *fiber.App) {
 			"Title": "Hello, World!",
 		}, "layouts/main")
 	})
-
-	app.Get("/users/:name?", func(c *fiber.Ctx) error {
-		return c.Render("index", fiber.Map{
-			"Title": c.Params("name"),
-		}, "layouts/main")
-	})
+	
+	// User
+	app.Get("/users/:id", usercontrollers.Show)
 }
