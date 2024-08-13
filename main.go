@@ -3,12 +3,22 @@ package main
 import (
 	"log"
 
+	"github.com/fadhilmufid/fiber-tutorial/database"
 	"github.com/fadhilmufid/fiber-tutorial/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"gorm.io/gorm"
 )
 
+
+type Product struct {
+  gorm.Model
+  Code  string
+  Price uint
+}
+
 func main() {
+	database.ConnectDb()
 	// Engine
 	engine := html.New("./app/views", ".html")
 
