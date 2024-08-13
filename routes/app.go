@@ -1,7 +1,7 @@
 package routes
 
 import (
-	usercontrollers "github.com/fadhilmufid/fiber-tutorial/app/controllers"
+	"github.com/fadhilmufid/fiber-tutorial/app/features/user"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -14,5 +14,7 @@ func Register(app *fiber.App) {
 	})
 	
 	// User
-	app.Get("/users/:id", usercontrollers.Show)
+	app.Get("/users/:id", user.ShowController)
+	app.Post("/users", user.CreateController)
+	app.Get("/users", user.IndexController)
 }
