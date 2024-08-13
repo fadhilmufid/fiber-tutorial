@@ -13,6 +13,8 @@ func Register(app *fiber.App) {
 	})
 
 	app.Get("/users/:name?", func(c *fiber.Ctx) error {
-    	return c.SendString(c.Params("name"))
+		return c.Render("index", fiber.Map{
+			"Title": c.Params("name"),
+		}, "layouts/main")
 	})
 }
