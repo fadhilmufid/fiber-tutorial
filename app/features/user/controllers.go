@@ -1,13 +1,38 @@
 package user
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
+
 	"github.com/gofiber/fiber/v2"
 )
 
 func IndexController(c *fiber.Ctx) error {
-	users := FindAll()
-	responseUsers := SerializeAll(users)
-	return c.Status(200).JSON(responseUsers)
+	users := FindAll() // Fetch the users from the database or service
+    OldresponseUsers := SerializeAllJSON(users) // Get JSON string from users
+
+    // Construct the new JSON response
+    responseUsers := fmt.Sprintf(`{"status": 200, "users": %s}`, OldresponseUsers)
+
+    // Define a variable to hold the unmarshaled data
+    var responseData map[string]interface{}
+
+    // Unmarshal the JSON string into the map
+    err := json.Unmarshal([]byte(responseUsers), &responseData)
+    if err != nil {
+        log.Println("Error unmarshaling JSON:", err)
+        return c.Status(500).SendString("Internal Server Error")
+    }
+
+    // Pass the unmarshaled data to the template
+    return c.Render(
+        "users/index",
+        fiber.Map{
+            "response": responseData, // Pass the unmarshaled data
+        },
+        "layouts/main")
+
 }
 
 
@@ -24,11 +49,14 @@ func ShowController(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	responseUser := Serialize(user)
+	// responseUser := Serialize(user)
+	
+	responseUserJSON := SerializeJSON(user)
+
 	return c.Render(
-				"index",
+				"users/show",
 	 			fiber.Map{
-					"Title": responseUser,
+					"user": responseUserJSON,
 				},
 			 	"layouts/main")
 

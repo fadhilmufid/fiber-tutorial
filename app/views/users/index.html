@@ -1,0 +1,26 @@
+{{template "layouts/partials/navbar" .}}
+<div class="p-4">
+<a href="/users/1">
+    Back
+</a>
+    <div>Status: {{.response.status}}</div>
+
+<div class="p-4 flex w-full h-full items-center justify-center gap-4">
+        {{range $index, $user := .response.users}}
+    <a href="/users/{{index $user "id"}}">
+    <div class="flex flex-col items-center justify-center gap-2 w-96 p-4 border shadow">
+        <div class="text-lg font-semibold">
+            {{index $user "first_name"}} {{index $user "last_name"}}
+        </div>
+        <div>
+            ID: {{index $user "id"}}
+        </div>
+        <div>
+            Created At: {{index $user "CreatedAt"}}
+        </div>
+        <hr class="my-2">
+    </div>
+    </a>
+        {{end}}
+
+</div>

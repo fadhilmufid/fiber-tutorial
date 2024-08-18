@@ -8,9 +8,7 @@ import (
 func Register(app *fiber.App) {
 	app.Get("/", func(c *fiber.Ctx) error {
 		// Render index within layouts/main
-		return c.Render("index", fiber.Map{
-			"Title": "Hello, World!",
-		}, "layouts/main")
+		return c.Render("index", fiber.Map{}, "layouts/main")
 	})
 	
 	// User
